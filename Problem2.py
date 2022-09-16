@@ -14,6 +14,14 @@ def gradx(x, x0):
 
 	return g
 
+def hessian():
+	# Generates Hessian for problem 2
+	# Hessian is constant for this problem
+
+	H = np.array([[8.0, 0.0], [0.0, 18.0]])
+
+	return H
+
 # Main program for problem 2
 if __name__ == '__main__':
 	# HW2 Problem 2
@@ -21,4 +29,5 @@ if __name__ == '__main__':
 	x = np.array([[0.0], [0.0]])
 	x0 = np.array([[0.0], [1.0]])
 	g0 = gradx(x, x0)
-	print(g0)
+	H0 = hessian()
+	print(H0)
