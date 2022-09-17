@@ -137,8 +137,10 @@ if __name__ == '__main__':
 	# Determine distance of each solution to desired point (-1, 0, 1)^T
 	d_GD = np.sqrt((x1_GD + 1.0)**2 + x_GD[0]**2 + (x_GD[1] - 1.0)**2)
 	d_N = np.sqrt((x1_N + 1.0)**2 + x_N[0]**2 + (x_N[1] - 1.0)**2)
+	print(' ')
 	print('Gradient Descent Distance = ' + str(d_GD))
 	print('Newtons Method Distance = ' + str(d_N))
+	print(' ')
 
 	# Plot method convergence
 	fig = plt.figure(num=1)
@@ -160,7 +162,9 @@ if __name__ == '__main__':
 
 	# Determine distance of each solution to desired point (-1, 0, 1)^T
 	d_GD = np.sqrt((x1_GD + 1.0) ** 2 + x_GD[0] ** 2 + (x_GD[1] - 1.0) ** 2)
+	print(' ')
 	print('Gradient Descent Distance = ' + str(d_GD))
+	print(' ')
 
 	# Plot method convergence
 	fig = plt.figure(num=2)
@@ -182,7 +186,9 @@ if __name__ == '__main__':
 
 	# Determine distance of each solution to desired point (-1, 0, 1)^T
 	d_GD = np.sqrt((x1_GD + 1.0) ** 2 + x_GD[0] ** 2 + (x_GD[1] - 1.0) ** 2)
+	print(' ')
 	print('Gradient Descent Distance = ' + str(d_GD))
+	print(' ')
 
 	# Plot method convergence
 	fig = plt.figure(num=3)
