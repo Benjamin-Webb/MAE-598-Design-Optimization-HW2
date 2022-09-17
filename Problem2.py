@@ -42,7 +42,7 @@ def GD_inexact(t, alpha, x0, epsilon0):
 	phi = np.zeros((1, 1))
 	# Begin gradient descent loop
 	while epsilon > epsilon0:
-		# Problem 2 minimize function ||x1 - x0||^2
+		# Problem 2 minimize function ||x - x0||^2
 		f0 = 5.0*x0[0]**2 + 10.0*x0[1]**2 + 12.0*x0[0]*x0[1] - 8.0*x0[0] - 14.0*x0[1] + 5.0
 
 		# Calculate gradient at current point
@@ -69,8 +69,28 @@ def GD_inexact(t, alpha, x0, epsilon0):
 			alpha = 1.0
 			n = n + 1
 
+	# Print complete statement with # of iterations
+	print('Gradient Descent Optimization Complete')
+	print('# of Iterations: ' + str(n))
 	return x
 
+def newton(x0, epsilon0):
+	# Function performs Newton's method for optimization of problem 2
+	# x0: initial guess
+	# epsilon0: stopping criteria
+
+	# Initialize stopping criteria
+	epsilon = 1.0
+	n = np.uint16(1)
+
+	f0 = np.zeros((1, 1))
+	f = np.zeros((1, 1))
+	# Begin optimization loop
+	while epsilon > epsilon0:
+		# Problem 2 optimzation function
+		f0 = 5.0*x0[0]**2 + 10.0*x0[1]**2 + 12.0*x0[0]*x0[1] - 8.0*x0[0] - 14.0*x0[1] + 5.0
+
+		
 
 # Main program for problem 2
 if __name__ == '__main__':
