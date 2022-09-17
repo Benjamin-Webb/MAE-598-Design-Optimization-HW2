@@ -3,6 +3,7 @@
 # 9/16/2022
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def gradx(x):
@@ -34,11 +35,12 @@ def GD_inexact(t, alpha, x0, epsilon0):
 	# epsilon0: stopping criteria
 
 	# Initialize stopping critera
-	epsilon = 1.0
-	n = np.uint16(1)
+	epsilon = np.zeros((1000, 1))
+	epsilon[0] = 1.0
+	n = np.uint16(0)
 
 	# Begin gradient descent loop
-	while epsilon > epsilon0:
+	while epsilon[n] > epsilon0:
 		# Problem 2 minimize function ||x - x0||^2
 		f0 = 5.0*x0[0]**2 + 10.0*x0[1]**2 + 12.0*x0[0]*x0[1] - 8.0*x0[0] - 14.0*x0[1] + 5.0
 
@@ -56,19 +58,18 @@ def GD_inexact(t, alpha, x0, epsilon0):
 		if np.abs(f) > np.abs(phi):
 			# Update alpha
 			alpha = 0.5 * alpha
-			n = n + 1
-		elif n >= 10000:
+		elif n >= 1000:
 			break
 		else:
-			epsilon = np.linalg.norm(f - f0)
+			n = n + np.uint16(1)
+			epsilon[n] = np.linalg.norm(f - f0)
 			x0 = x
 			alpha = 1.0
-			n = n + np.uint16(1)
 
 	# Print complete statement with # of iterations
 	print('Gradient Descent Optimization Complete')
-	print('# of Iterations: ' + str(n-1))
-	return x
+	print('# of Iterations: ' + str(n))
+	return x, n, epsilon[1:n+1]
 
 def newton(x0, epsilon0):
 	# Function performs Newton's method for optimization of problem 2
@@ -76,15 +77,16 @@ def newton(x0, epsilon0):
 	# epsilon0: stopping criteria
 
 	# Initialize stopping criteria
-	epsilon = 1.0
-	n = np.uint16(1)
+	epsilon = np.zeros((1000, 1))
+	epsilon[0] = 1.0
+	n = np.uint16(0)
 
 	# Calculate Hessian once, since it is constant over domain of this function
 	H0 = hessian()
 	H0_1 = np.linalg.inv(H0)
 
 	# Begin optimization loop
-	while epsilon > epsilon0:
+	while epsilon[n] > epsilon0:
 		# Problem 2 optimzation function
 		f0 = 5.0*x0[0]**2 + 10.0*x0[1]**2 + 12.0*x0[0]*x0[1] - 8.0*x0[0] - 14.0*x0[1] + 5.0
 
@@ -95,20 +97,19 @@ def newton(x0, epsilon0):
 		x = x0 - H0_1 @ g0
 
 		# Update optimization function value
-		f2 = 5.0*x[0]**2 + 10.0*x[1]**2 + 12.0*x[0]*x[1] - 8.0*x[0] - 14.0*x[1] + 5.0
 		f = f0 - 0.5*g0.T @ H0_1 @ g0
 
 		# Update stoping criteria and determine next step
-		epsilon = np.linalg.norm(f - f0)
-		x0 = x
 		n = n + np.uint16(1)
-		if n >= 10000:
+		epsilon[n] = np.linalg.norm(f - f0)
+		x0 = x
+		if n >= 1000:
 			break
 
 	# Print complete statement with # of iterations
 	print('Newton Optimization Complete')
-	print('# of Iterations: ' + str(n-1))
-	return x
+	print('# of Iterations: ' + str(n))
+	return x, n, epsilon[1:n+1]
 
 
 # Main program for problem 2
@@ -116,7 +117,7 @@ if __name__ == '__main__':
 	# HW2 Problem 2
 
 	# Gradient descent w/ inexact line search
-	x_GD = GD_inexact(1.0, 1.0, np.array([[0.0], [0.0]]), 0.000001)
+	x_GD, n_GD, eps_GD = GD_inexact(1.0, 1.0, np.array([[0.0], [0.0]]), 0.000001)
 	x1_GD = -2.0*x_GD[0] - 3.0*x_GD[1] + 1
 
 	print('x1 = ' + str(x1_GD))
@@ -124,9 +125,24 @@ if __name__ == '__main__':
 	print('x3 = ' + str(x_GD[1]))
 
 	# Newton's method
-	x_N = newton(np.array([[0.0], [0.0]]), 0.000001)
+	x_N, n_N, eps_N = newton(np.array([[0.0], [0.0]]), 0.000001)
 	x1_N = -2.0*x_N[0] - 3.0*x_N[1] + 1
 
 	print('x1 = ' + str(x1_N))
 	print('x2 = ' + str(x_N[0]))
 	print('x3 = ' + str(x_N[1]))
+
+	# Compare solutions of each method
+	# Determine distance of each solution to desired point (-1, 0, 1)^T
+	d_GD = np.sqrt((x1_GD + 1.0)**2 + x_GD[0]**2 + (x_GD[1] - 1.0)**2)
+	d_N = np.sqrt((x1_N + 1.0)**2 + x_N[0]**2 + (x_N[1] - 1.0)**2)
+	print('Gradient Descent Distance = ' + str(d_GD))
+	print('Newtons Method Distance = ' + str(d_N))
+
+	# Plot method convergence
+	fig = plt.figure(num=1)
+	plt.semilogy(np.linspace(1, n_GD, n_GD), eps_GD, 'bD--', np.linspace(1, n_N, n_N), eps_N, 'rD--')
+	plt.grid(b=True, which='both', axis='y')
+	plt.ylabel('error')
+	plt.xlabel('# of Iterations')
+	fig.legend(['Gradient Descent', 'Newtons Method'])
