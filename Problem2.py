@@ -116,10 +116,11 @@ def newton(x0, epsilon0):
 if __name__ == '__main__':
 	# HW2 Problem 2
 
-	# Gradient descent w/ inexact line search
+	# Gradient descent w/ inexact line search with t = 1.0
 	x_GD, n_GD, eps_GD = GD_inexact(1.0, 1.0, np.array([[0.0], [0.0]]), 0.000001)
 	x1_GD = -2.0*x_GD[0] - 3.0*x_GD[1] + 1
 
+	print('t = ' + str(1.0))
 	print('x1 = ' + str(x1_GD))
 	print('x2 = ' + str(x_GD[0]))
 	print('x3 = ' + str(x_GD[1]))
@@ -143,6 +144,51 @@ if __name__ == '__main__':
 	fig = plt.figure(num=1)
 	plt.semilogy(np.linspace(1, n_GD, n_GD), eps_GD, 'bD--', np.linspace(1, n_N, n_N), eps_N, 'rD--')
 	plt.grid(b=True, which='both', axis='y')
+	plt.title('t = 1.0')
+	plt.ylabel('error')
+	plt.xlabel('# of Iterations')
+	fig.legend(['Gradient Descent', 'Newtons Method'])
+
+	# Gradient descent w/ inexact line search with t = 0.5
+	x_GD, n_GD, eps_GD = GD_inexact(0.5, 1.0, np.array([[0.0], [0.0]]), 0.000001)
+	x1_GD = -2.0 * x_GD[0] - 3.0 * x_GD[1] + 1
+
+	print('t = ' + str(0.5))
+	print('x1 = ' + str(x1_GD))
+	print('x2 = ' + str(x_GD[0]))
+	print('x3 = ' + str(x_GD[1]))
+
+	# Determine distance of each solution to desired point (-1, 0, 1)^T
+	d_GD = np.sqrt((x1_GD + 1.0) ** 2 + x_GD[0] ** 2 + (x_GD[1] - 1.0) ** 2)
+	print('Gradient Descent Distance = ' + str(d_GD))
+
+	# Plot method convergence
+	fig = plt.figure(num=2)
+	plt.semilogy(np.linspace(1, n_GD, n_GD), eps_GD, 'bD--', np.linspace(1, n_N, n_N), eps_N, 'rD--')
+	plt.grid(b=True, which='both', axis='y')
+	plt.title('t = 0.5')
+	plt.ylabel('error')
+	plt.xlabel('# of Iterations')
+	fig.legend(['Gradient Descent', 'Newtons Method'])
+
+	# Gradient descent w/ inexact line search with t = 0.3
+	x_GD, n_GD, eps_GD = GD_inexact(0.3, 1.0, np.array([[0.0], [0.0]]), 0.000001)
+	x1_GD = -2.0 * x_GD[0] - 3.0 * x_GD[1] + 1
+
+	print('t = ' + str(0.3))
+	print('x1 = ' + str(x1_GD))
+	print('x2 = ' + str(x_GD[0]))
+	print('x3 = ' + str(x_GD[1]))
+
+	# Determine distance of each solution to desired point (-1, 0, 1)^T
+	d_GD = np.sqrt((x1_GD + 1.0) ** 2 + x_GD[0] ** 2 + (x_GD[1] - 1.0) ** 2)
+	print('Gradient Descent Distance = ' + str(d_GD))
+
+	# Plot method convergence
+	fig = plt.figure(num=3)
+	plt.semilogy(np.linspace(1, n_GD, n_GD), eps_GD, 'bD--', np.linspace(1, n_N, n_N), eps_N, 'rD--')
+	plt.grid(b=True, which='both', axis='y')
+	plt.title('t = 0.3')
 	plt.ylabel('error')
 	plt.xlabel('# of Iterations')
 	fig.legend(['Gradient Descent', 'Newtons Method'])
