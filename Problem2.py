@@ -198,3 +198,4 @@ if __name__ == '__main__':
 	plt.ylabel('error')
 	plt.xlabel('# of Iterations')
 	fig.legend(['Gradient Descent', 'Newtons Method'])
+	plt.show()
