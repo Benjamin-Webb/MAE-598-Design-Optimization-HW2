@@ -108,7 +108,7 @@ def newton(x0, epsilon0):
 
 	# Print complete statement with # of iterations
 	print('Newton Optimization Complete')
-	print('# of Iterations: ' + str(n))
+	print('# of Iterations: ' + str(n-1))
 	return x, n, epsilon[1:n+1]
 
 
